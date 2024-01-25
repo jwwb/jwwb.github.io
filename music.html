@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>音乐播放器</title>
+    <style>
+        *{
+            margin: 0 auto;
+        }
+        body{
+            /*background-color: rgb(104,118,138);*/
+            background: url("img/bm.jpg");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size:100%;
+        }
+        /* 设置滚动条的样式 */
+        ::-webkit-scrollbar {
+            width:5px;
+        }
+        /* 滚动槽 */
+        ::-webkit-scrollbar-track {
+            -webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3);
+            border-radius:10px;
+        }
+        /* 滚动条滑块 */
+        ::-webkit-scrollbar-thumb {
+            border-radius:10px;
+            background:rgba(0,0,0,0.1);
+            -webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.5);
+        }
+        ::-webkit-scrollbar-thumb:window-inactive {
+            background:rgba(30, 144, 255,0.4);
+        }
+        .main{
+            position: relative;
+            top: 20px;
+            width: 520px;
+            height: 600px;
+            background:rgba(30,144,255,0.1);
+            box-shadow: 0 15px 50px rgb(0,0,0);
+            border-radius: 10px;
+            outline: 0;
+        }
+        .musicBox{
+            position: absolute;
+            width: 520px;
+            height: 40px;
+            line-height: 40px;
+            vertical-align: center;
+        }
+        .buttons{
+            position: absolute;
+            display: inline-block;
+            height:40px;
+            width: 40px;
+            cursor: pointer;
+        }
+        #fileBox{
+            left: 0px;
+            background: url("img/音乐按钮.png");
+            background-position: 0 0;
+            background-repeat: no-repeat;
+        }
+        #fileBox:hover{
+            left: 0px;
+            background: url("img/音乐按钮.png");
+            background-position: 0px -40px;
+            background-repeat: no-repeat;
+        }
+        .file{
+            position: absolute;
+            left: 0px;
+            opacity: 0;
+            height:40px;
+            width: 40px;
+            cursor: pointer;
+            font-size:0;
+        }
+        #pre{
+            left: 40px;
+            background: url("img/音乐按钮.png");
+            background-position: 0px -80px;
+            background-repeat: no-repeat;
+        }
+        #pre:hover{
+            background: url("img/音乐按钮.png");
+            background-position: 0px -120px;
+            background-repeat: no-repeat;
+        }
+        #startStop{
+            left: 80px;
+        }
+        .start{
+            background: url("img/音乐按钮.png");
+            background-position: 0px -160px;
+            background-repeat: no-repeat;
+        }
+        .start:hover{
+            background: url("img/音乐按钮.png");
+            background-position: 0px -200px;
+            background-repeat: no-repeat;
+        }
+        .stop{
+            background: url("img/音乐按钮.png");
+            background-position: 0px -240px;
+            background-repeat: no-repeat;
+        }
+        .stop:hover{
+            background: url("img/音乐按钮.png");
+            background-position: 0px -280px;
+            background-repeat: no-repeat;
+        }
+        #next{
+            left: 120px;
+            background: url("img/音乐按钮.png");
+            background-position: 0px -320px;
+            background-repeat: no-repeat;
+        }
+        #next:hover{
+            background: url("img/音乐按钮.png");
+            background-position: 0px -360px;
+            background-repeat: no-repeat;
+        }
+        #playType{
+            left: 165px;
+        }
+        .lbxh{
+            background: url("img/音乐按钮.png");
+            background-position: 0px -400px;
+            background-repeat: no-repeat;
+        }
+        .lbxh:hover{
+            background: url("img/音乐按钮.png");
+            background-position: 0px -440px;
+            background-repeat: no-repeat;
+        }
+        .dqxh{
+            background: url("img/音乐按钮.png");
+            background-position: 0px -480px;
+            background-repeat: no-repeat;
+        }
+        .dqxh:hover{
+            background: url("img/音乐按钮.png");
+            background-position: 0px -520px;
+            background-repeat: no-repeat;
+        }
+        .sjbf{
+            background: url("img/音乐按钮.png");
+            background-position: 0px -560px;
+            background-repeat: no-repeat;
+        }
+        .sjbf:hover{
+            background: url("img/音乐按钮.png");
+            background-position: 0px -600px;
+            background-repeat: no-repeat;
+        }
+        #progressDiv{
+            position: absolute;
+            left: 205px;
+            height:40px;
+            width: 310px;
+            cursor: pointer;
+            color: aliceblue;
+            font-size: 14px;
+        }
+        #progressDiv .times{
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            display: inline-block;
+            color: #515151;
+        }
+        #progressDiv .times:hover{
+            color: #2c2c2c;
+        }
+        #progressDiv .progress{
+            position: absolute;
+            top: 20px;
+            left: 90px;
+            border-radius:20px;
+        }
+        #progressBar{
+            border: 2px solid;
+            box-shadow: 0px 0px 10px 5px #3b8cf8, 0 0 1px #3b8cf8, 0 0 1px #3b8cf8, 0 0 1px #3b8cf8, 0 0 1px #3b8cf8, 0 0 1px #3b8cf8, 0 0 1px #3b8cf8;
+            color: #fff;
+        }
+        .musicList{
+            position: absolute;
+            top: 40px;
+            left: 10px;
+            width: 500px;
+            height: 540px;
+            overflow: auto;
+            border: 1px solid rgba(30,144,255,0.5);
+        }
+        #musicList{
+            /*position: absolute;*/
+            list-style: none;
+            margin: 0px;
+            padding: 2px 10px;
+            width: 475px;
+            height: 530px;
+        }
+        #musicList>li{
+            position: relative;
+            padding: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            margin: 5px 2px;
+            font-size: 14px;
+            /*text-shadow: 0 0 2px red,0 0 10px red,0 0 30px red,0 0 10px red;*/
+        }
+        #musicList>li:hover{
+            background-color:rgba(30,144,255, 0.5);
+            color: rgb(255,255,255);
+        }
+        .liFocus{
+            background-color:rgba(30,144,255, 0.5);
+            color: rgb(255,255,255);
+        }
+        .liDefocus{
+            background-color: rgba(135,206,250, 0.5);
+            color: #2c2c2c;
+        }
+        /* 让canvas位于ul标签下面 */
+        #wrap{
+            z-index: -1;
+            position: absolute;
+            top: 40px;
+            left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="musicBox">
+            <div class="buttons fileBox" id="fileBox">
+                <input type="file" id="file" class="file" multiple="multiple" accept="audio/*">
+            </div>
+            <div class="buttons" id="pre"></div>
+            <div class="buttons start" id="startStop"></div>
+            <div class="buttons" id="next"></div>
+            <div class="buttons lbxh" id="playType"></div>
+            <div class="progressDiv" id="progressDiv">
+                <div class="times" id="rollTime" >00:00</div>
+                <div class="times">/</div>
+                <div class="times" id="totalTime">00:00</div>
+                <div class="progress" id="totalProgress" style="width: 210px;border: 2px solid #68768A;"></div>
+                <div class="progress" id="progressBar"></div>
+            </div>
+        </div>
+        <div class="musicList">
+            <ul id="musicList"></ul>
+        </div>
+        <canvas id="wrap"></canvas>
+    </div>
+    <script>
+        let file = document.getElementById('file'), // 导入歌曲
+            pre = document.getElementById('pre'), // 上一首
+            startStop = document.getElementById('startStop'), //播放、暂停
+            next = document.getElementById('next'), // 下一首
+            playType = document.getElementById('playType'), // 切换播放方式
+            rollTime = document.getElementById('rollTime'), // 实时播放时间
+            totalTime = document.getElementById('totalTime'), // 总时长
+            progressBar = document.getElementById('progressBar'), // 歌曲实时进度条
+            totalProgress = document.getElementById('totalProgress'), // 歌曲总进度条
+            liIdPrefix = 'mli', // 音乐列表li的id前缀
+            listContainer = document.getElementById('musicList'); // 音乐列表
+
+        let audio = new Audio();
+
+        var playTypeNum = 1,// 默认是列表循环（1 列表循环 2 单曲循环 3 随机播放）
+            current, // 当前音乐播放索引
+            preIndex, // 上一个播放的索引（因为当前播放音乐所在的li会有个聚焦的class样式，因此在改变当前播放之前，先记录当前播放索引，用于清空聚焦的class样式）
+            fileList = [];
+
+        // 音频可视化
+        wrap.width = 500;
+        wrap.height = 540;
+        const canvasCtx = wrap.getContext("2d");
+        const AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext;
+        let audioContext = new AudioContext();//实例化
+        let sources; // 音频源
+
+        /**
+         * 加载音乐文件列表
+         */
+        file.onchange = function (e){
+            if (e.target.files.length>0){
+                fileList = e.target.files;
+                showMusiclist(fileList);
+                current = 0;
+                preIndex = undefined; // 每次重新导入了音乐，将 上一个播放的索引 重置为undefined
+                loadMusicAndPlay(current);
+            }
+        }
+
+        /**
+         * 展示音乐列表
+         */
+        function showMusiclist(list){
+            var container = document.createDocumentFragment();
+            for(var i = 0; i < list.length ; i++ ){
+                var file = list[i]
+                var node = document.createElement('li'); // 创建li元素
+                node.id = liIdPrefix + i; // 设置li的id
+                node.innerText = '[' + (i+1) + '] ' + file.name;
+                node.className = 'liDefocus'; // 设置li的class样式
+                container.appendChild(node);
+            }
+            // 每次列表添加数据之前，先清空之前的列表
+            while (listContainer.firstChild) {
+                listContainer.removeChild(listContainer.firstChild);
+            }
+            listContainer.appendChild(container);
+        }
+
+        /**
+         * 切换播放方式
+         */
+        playType.onclick = function (){
+            if (playTypeNum == 1){ // 当前播放为列表循环，点击切换播放方式时，改为单曲循环
+                console.log('列表循环====>>>单曲循环');
+                playTypeNum = 2;
+                playType.className = "buttons dqxh"; // 设置单曲循环的class
+            }else if (playTypeNum == 2){ // 当前播放为单曲循环，点击切换播放方式时，改为随机播放
+                console.log('单曲循环====>>>随机播放');
+                playTypeNum = 3;
+                playType.className = "buttons sjbf"; // 设置随机播放的class
+            }else { // 当前播放为随机播放，点击切换播放方式时，改为列表循环
+                console.log('随机播放====>>>列表循环');
+                playTypeNum = 1;
+                playType.className = "buttons lbxh"; // 设置列表循环的class
+            }
+        }
+
+        /**
+         * 根据播放方式，播放音乐
+         */
+        function playTypeChange(){
+            preIndex = current; // 每次改变当前播放时，记录当前播放的索引
+            if (playTypeNum == 1){ // 列表循环
+                if(current >= fileList.length - 1){
+                    current = 0;
+                    loadMusicAndPlay(current);
+                }else{
+                    loadMusicAndPlay(++current);
+                }
+            }else if(playTypeNum == 2){ // 单曲循环
+                // 单曲循环不改变播放索引
+                console.log(current);
+                loadMusicAndPlay(current);
+            }else {
+                // 随机播放，生成随机数
+                current = Math.floor(Math.random()*fileList.length);
+                loadMusicAndPlay(current);
+            }
+        }
+
+        /**
+         * 双击切换播放
+         */
+        listContainer.ondblclick = function(e){
+            if(e.target.tagName.toLowerCase() === 'li'){
+                for(var i = 0; i < this.children.length; i++){
+                    if(this.children[i] === e.target){
+                        preIndex = current; // 切换播放之前，先记录当前播放索引
+                        current = i
+                    }
+                }
+                console.log('第%d首', current + 1)
+                loadMusicAndPlay(current);
+            }
+        }
+
+        /**
+         * 上一曲
+         */
+        pre.onclick = function (){
+            if (fileList.length>0){
+                console.log('点击播放上一首！');
+                preIndex = current;
+                if (current == 0){
+                    current = fileList.length-1;
+                    loadMusicAndPlay(current);
+                }else {
+                    loadMusicAndPlay(--current);
+                }
+            }
+        }
+
+        /**
+         * 下一曲
+         */
+        next.onclick = function (){
+            if (fileList.length>0) {
+                console.log('点击播放下一首！');
+                preIndex = current;
+                if (current >= fileList.length - 1) {
+                    current = 0;
+                    loadMusicAndPlay(current);
+                } else {
+                    loadMusicAndPlay(++current);
+                }
+            }
+        }
+
+        /**
+         * 播放暂停
+         */
+        startStop.onclick = function (){
+            startOrStop();
+        }
+
+        /**
+         * 播放或暂停
+         */
+        function startOrStop(){
+            if (fileList.length>0) {
+                if (audio.paused) { // 如果当前音乐是暂停状态，点击按钮，则改为播放状态
+                    startStop.className = "buttons start"; // 设置播放的class
+                    audio.play();
+                } else { // 如果当前音乐是播放状态，点击按钮，则改为暂停状态
+                    startStop.className = "buttons stop"; // 设置暂停的class
+                    audio.pause();
+                }
+            }
+        }
+
+        /**
+         * 加载音乐、播放
+         */
+        function loadMusicAndPlay(id){
+            var file = fileList[id];
+            progressBar.setAttribute('style','width:0');// 重置进度条
+            if (!Object.is(preIndex,undefined)){ // 如果上一次播放索引不为undefined
+                listContainer.children[preIndex].className = 'liDefocus';
+            }
+            listContainer.children[id].className = 'liFocus'; // 聚焦当前行
+            // 如果音乐是暂停状态，切换播放，则改为播放状态
+            if (audio.paused){
+                startStop.className = "buttons start"; // 设置播放的class
+            }
+            audioContext.resume();
+            var fileReader = new FileReader();
+            fileReader.readAsDataURL(file); // 文件读取为url
+            fileReader.onload = function(e) {
+                audio.src = e.target.result;
+                audio.volume = 0.2; // 设置起始音量
+                 // 当音频源为undefined时才创建
+                if (Object.is(sources,undefined)){
+                    //创建一个MediaElementAudioSourceNode接口来关联audio元素的音频。
+                    sources = audioContext.createMediaElementSource(audio);
+                }
+                var analyser = audioContext.createAnalyser();
+                // 连接到音频分析器，分析频谱
+                sources.connect(analyser);
+                analyser.connect(audioContext.destination);
+                绘制频谱(analyser,file.name); // 绘制音频频谱
+                audio.play();
+            }
+        }
+
+        function 绘制频谱(analyser,name){
+            var oW = wrap.width;
+            var oH = wrap.height;
+
+            var color1 = canvasCtx.createLinearGradient(oW/2, 0, oW, oH / 2);
+            color1.addColorStop(0, '#FFF');
+            color1.addColorStop(.2, '#FFFF00');
+            color1.addColorStop(.25, '#FF4500');
+            color1.addColorStop(.4, '#00FF7F');
+            color1.addColorStop(.5, '#FFD700');
+            color1.addColorStop(.75, '#FFFAFA');
+            color1.addColorStop(.85, '#00FF7F');
+            color1.addColorStop(1, '#FF00FF');
+
+            /*var color2=canvasCtx.createLinearGradient(0,0,oW,oH);
+            color2.addColorStop(0, '#1E90FF');
+            color2.addColorStop(.25, '#FFD700');
+            color2.addColorStop(.5, '#8A2BE2');
+            color2.addColorStop(.75, '#4169E1');
+            color2.addColorStop(1, '#FF0000');*/
+
+            var output = new Uint8Array(360);
+            var du = 2,//角度
+                R = 160,//半径
+                W = 3;//宽
+            (function drawSpectrum() {
+                analyser.getByteFrequencyData(output);
+                canvasCtx.clearRect(0, 0, wrap.width, wrap.height);
+                for (var i = 0; i < 360; i++) {
+                    var value = output[i] / 8;
+                    canvasCtx.beginPath();
+                    canvasCtx.lineWidth = W;
+                    Rv1 = (R -value);
+                    Rv2 = (R +value);
+                    canvasCtx.moveTo((Math.sin((i * du) / 180 * Math.PI) * Rv1 + oW/2),-Math.cos((i * du) / 180 * Math.PI) * Rv1 + oH/2);
+                    canvasCtx.lineTo((Math.sin((i * du) / 180 * Math.PI) * Rv2 + oW/2),-Math.cos((i * du) / 180 * Math.PI) * Rv2 + oH/2);
+                    canvasCtx.strokeStyle = color1;//线条的颜色
+                    canvasCtx.stroke();
+                }
+                canvasCtx.font = "14px 华文楷体";
+                // 设置颜色
+                canvasCtx.fillStyle = color1;
+                // 设置水平对齐方式
+                canvasCtx.textAlign = "center";
+                // 设置垂直对齐方式
+                canvasCtx.textBaseline = "middle";
+                // 绘制文字（参数：要写的字，x坐标，y坐标）
+                canvasCtx.fillText(name, oW/2, oH/2);
+                requestAnimationFrame(drawSpectrum);
+            })();
+        }
+
+        /**
+         * 监听音频是否播放完毕，播放完毕继续播放下一首
+         */
+        audio.addEventListener('ended', function () {
+            console.log('音频播放完毕，开始播放下一首！');
+            playTypeChange();
+        }, false);
+
+        /**
+         * 监听音频加载事件（元数据加载），获取音频时长
+         */
+        audio.addEventListener("loadedmetadata", function () {
+            totalTime.textContent = getFormatterDate(audio.duration);
+        });
+
+        /**
+         * 监听音频播放时间更新事件，实时更新当前播放时间和进度条
+         */
+        audio.addEventListener( "timeupdate" , function (){
+            var currentTime = audio.currentTime; // 当前播放时间
+            var totalTime = audio.duration; // 总时间
+            // 当是数字的时候
+            if (!isNaN(totalTime)) {
+                rollTime.textContent = getFormatterDate(currentTime);// 当前播放时间
+                var width = Math.floor(currentTime / totalTime * 210);// 得到播放时间与总时长的比值
+                // 设置进度条走动
+                progressBar.setAttribute('style','width:'+width+'px');
+            }
+        });
+
+        /**
+         * 监听进度条点击事件
+         */
+        totalProgress.addEventListener("click",function (event) {
+            updateTime(event.offsetX);// 获取鼠标所在位置,更新播放时间和进度条
+        });
+
+        /**
+         * 监听进度条点击事件
+         */
+        progressBar.addEventListener("click",function (event) {
+            updateTime(event.offsetX);// 获取鼠标所在位置,更新播放时间和进度条
+        });
+
+        /**
+         * 更新播放时间和进度条
+         */
+        function updateTime(x){
+            if (fileList.length>0) {
+                var bfb = x / 210 * 100;
+                audio.currentTime = audio.duration*+bfb/100;
+                var width = Math.floor(audio.currentTime / audio.duration * 210);// 得到播放时间与总时长的比值
+                // 设置进度条走动
+                progressBar.setAttribute('style','width:'+width+'px');
+            }
+        }
+
+        /**
+         * 格式化时间(00:00)
+         */
+        function getFormatterDate(time){
+            var m = parseInt(time / 60 );// 分
+            var s = parseInt(time % 60 );// 秒
+            // 补零
+            m = m > 9 ? m : "0"   + m;
+            s = s > 9 ? s : "0"   + s;
+            return m + ":"   + s;
+        }
+
+        // 调用事件
+        window.onkeydown = function (e) {
+            if (e.keyCode==80 && e.ctrlKey && e.altKey){
+                console.log('按下了快捷键：ctrl+alt+p 键');
+                startOrStop();
+            }
+        }
+
+    </script>
+</body>
+</html>
