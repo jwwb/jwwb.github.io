@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>影视</title>
+<style>
+  	*{
+		cursor: url(images/normal-select.png), auto;
+  	}
+  	
+	a:hover {
+        cursor: url(images/link-select.png), pointer;
+    }
+  	
+   	canvas{
+		border: 1px solid black;	
+	}
+	
+    button {
+      margin-top: 50px;
+      width: 60%;
+      height: 30px;
+      border-radius: 10px;
+      border: 0;
+      color: #fff;
+      text-align: center;
+      line-height: 30px;
+      font-size: 15px;
+      background-image: linear-gradient(to right, #87CEEB, #004080);
+    }
+	button:hover {
+      color: #000;
+      background-image: linear-gradient(to right, #00FF00, #006400);
+  	}
+	
+	ul {
+	    list-style-type: none;
+	    margin: 0;
+	    padding: 0;
+	    width: 200px;
+	    background-color: #f1f1f1;
+	}
+	li a {
+	    display: block;
+	    color: #000;
+	    padding: 8px 16px;
+	    text-decoration: none;
+	}
+	li a.active {
+	    background-color: #4CAF50;
+	    color: white;
+	}
+	li a:hover:not(.active) {
+	    background-color: #555;
+	    color: white;
+	}
+	
+	.box1{
+      width: 200px;
+      float: left;/*添加浮动*/
+      background-color: white;
+    }
+    .box2{
+      float: rigth;/*添加浮动*/
+    }
+    
+     .bjimg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -10;
+      object-fit: cover;
+    }
+
+</style>
+</head>
+<body oncontextmenu=self.event.returnValue=false onselectstart="return false">
+  <video src="video/Solar_System_scale_1x_amq-13.mp4" class="bjimg" id="videoBg" autoplay loop muted></video>
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" background="images/topbg.gif">
+	  <tr>
+	    <td width='20%' height="60">
+			<img src="images/logo.gif" />
+		</td>
+	  </tr>
+	</table>
+	<div  class="box1">
+			<ul>
+			  <li><a class="tab" id="1" href="https://www.gdjingdian.com/" onclick="clickTab(this)" target="xs">星空影院</a></li>
+			  <li><a class="tab" id="2" href="https://www.freeok.vip/?ref=www.slwxdh.com" onclick="clickTab(this)" target="xs">FreeOK</a></li>
+			  <li><a class="tab" id="3" href="https://mjw21.com/" onclick="clickTab(this)" target="xs">91美剧网</a></li>
+			  <li><a class="tab" id="4" href="https://www.dilidiliw.com/" onclick="clickTab(this)" target="xs">嘀哩嘀哩</a></li>
+			  <li><a class="tab" id="5" href="http://haliyy.com/" onclick="clickTab(this)" target="xs">哈哩哈哩</a></li>
+			  <li><a class="tab" id="6" href="https://yhdmoe.com/" onclick="clickTab(this)" target="xs">樱花动漫</a></li>
+			  <li><a class="tab" id="7" href="https://www.shnakun.com/" onclick="clickTab(this)" target="xs">独播库</a></li>
+			  <li><a class="tab" id="8" href="https://www.jinbang985.com/" onclick="clickTab(this)" target="xs">免费影视网</a></li>
+			  <li><a class="tab" id="9" href="https://www.moefun.net/" onclick="clickTab(this)" target="xs">嗷呜动漫</a></li>
+			  <li><a class="tab" id="10" href="http://buding2.com/" onclick="clickTab(this)" target="xs">布丁动漫</a></li>
+			  <li><a class="tab" id="11" href="https://www.jlys.co/" onclick="clickTab(this)" target="xs">九牛电影</a></li>
+			  <li><a class="tab" id="12" href="https://gaze.run/" onclick="clickTab(this)" target="xs">注视影视</a></li>
+			  <li><a class="tab" id="13" href="https://www.hdmoli.pro/" onclick="clickTab(this)" target="xs">HDmoli</a></li>
+			  <li><a class="tab" id="14" href="https://svip.bljiex.cc/" onclick="clickTab(this)" target="xs">Vip解析</a></li>
+			  <li><a class="tab" id="15" href="https://www.acgnya.com/" onclick="clickTab(this)" target="xs">acgNya</a></li>
+			  <li><a class="tab" id="16" href="https://www.kankanwu.com/" onclick="clickTab(this)" target="xs">看看屋影视</a></li>
+			  <!-- <li><a href="start2.jsp">需要vpn</a></li> -->
+			</ul>
+	</div>
+	<div class="box2">
+		<iframe name="xs" src="" width=86% height=85% style=" frameborder:0; position: absolute;"></iframe>
+	</div>
+	
+	<script type="text/javascript" src="js/1.js"></script>
+	<script type="text/javascript" src="js/2.js"></script>
+	<script type="text/javascript" src="js/screensaver.js"></script>
+	<script type="text/javascript" src="js/maintainactive.js"></script>
+</body>
+</html>
